@@ -8,7 +8,7 @@ class NewMessageForm(forms.ModelForm):
         model = RoomMessage
         fields = ('text',)
         widgets = {
-            'text': forms.Textarea(attrs={
+            'text': forms.TextInput(attrs={
                 'class': 'w-full py-4 px-6 rounded-xl border flex-1 mr-1', 
                 'id': 'chat-message-input', 
                 'name': 'text', 

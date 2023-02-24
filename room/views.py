@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
-from .models import Room
+from .models import Room, RoomMessage
 from .forms import NewMessageForm
 
 
@@ -16,20 +16,13 @@ def rooms(request):
     context = {'rooms': rooms, 'query': query}
     return render(request, 'room/index.html', context)
 
+
 @login_required
 def detail(request, slug):
     room = Room.objects.get(slug=slug)
-    if request.method == 'POST':
-        form = NewMessageForm(request.POST)
+    messages = RoomMessage.objects.filter(room=room)
+    form = NewMessageForm()
 
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.room = room
-            message.created_by = request.user
-            message.save()
+    context = {'room': room, 'form': form, 'messages': messages}
 
-            return redirect('room:detail', slug)
-    else: form = NewMessageForm()
-
-    context = {'room': room, 'form': form}
     return render(request, 'room/detail.html', context)

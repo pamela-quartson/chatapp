@@ -17,3 +17,6 @@ class RoomMessage(models.Model):
     room = models.ForeignKey(Room, related_name='messages', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, related_name='created_messages', on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('created_at', )
